@@ -1,28 +1,34 @@
 function simpleTemplating(data) {
-    var html = '<ul>';
-    $.each(data, function(index, item){
-        html += '<li>'+ item +'</li>';
+    let html = '<ul>';
+    $.each(data, function(index, item) {
+        let pokemonEntry = `${item[0]}. ${item[1]}`;
+        html += "<li class='pokemonEntry'>"+ "<p>" + pokemonEntry + "</p>" + "<p hidden>" + item[2] + "</p>" + "</li>"; 
     });
-    html += '</ul>';
+    html += "</ul>";
+    //console.log("html = ", html);
     return html;
 }
 
-$('#pagination-container').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14, 15, 16, 17, 18, 19 ,20, 195],
-    callback: function(data, pagination) {
-        // template method of yourself
-        var html = simpleTemplating(data);
-        $('#data-container').html(html);
-    }
-})
-
-/*async function main () {
-
-    let pokemonUnorderedListElement = document.getElementById("pokemonUL");
-    //console.log(pokemonUnorderedListElement); 
+async function main () {
     let data = await getPockemonList();
     //console.log(data.results);
-    fillUnorderedList(pokemonUnorderedListElement, data.results);
+    let pokemonEntryList = [];
+    data.results.forEach((elem, index) => {
+        let pokemonName = niceName(elem.name);
+        pokemonEntryList.push([index + 1, pokemonName, elem.url]);
+    });
+
+    //console.log(pokemonEntryList);
+
+    $('#pagination-container').pagination({
+        dataSource: pokemonEntryList,
+        callback: function(data, pagination) {
+            // template method of yourself
+            let html = simpleTemplating(data);
+            $('#data-container').html(html);
+            addFuntionPokemonEntry();
+        }
+    });
 
 }
 main();
@@ -39,6 +45,14 @@ function niceName(name) {
     return name;
 }
 
+function addFuntionPokemonEntry() {
+    let pokemonEntryList = document.getElementsByClassName("pokemonEntry");
+    for (let li of pokemonEntryList) {
+        li.addEventListener("click", myFFunction);
+    }
+}
+
+/*
 function fillUnorderedList(ul, results) {
     console.log(results);
     results.forEach((pokemonEntry, index) => {
@@ -60,17 +74,24 @@ function fillUnorderedList(ul, results) {
         ul.appendChild(li);
     });
 }
-
-async function myFunction() {
-    //console.log(this);
+*/
+async function myFFunction() {
     let pokemonUrl = this.childNodes[1].innerHTML;
-
+    
     let response = await fetch(pokemonUrl);
     let pokemonData = await response.json();
     let pokemonName = niceName(pokemonData.name);
+
+    let pokemonOfficialArtUrl = pokemonData["sprites"]["other"]["official-artwork"]["front_default"];
+    if (!pokemonOfficialArtUrl) {
+        pokemonOfficialArtUrl = "public/imgs/no_found_pokemon.png";
+    }
+    console.log(pokemonOfficialArtUrl);
     
+    document.getElementById("pokemonImage").src = pokemonOfficialArtUrl;
     document.getElementById("pokemonId").innerHTML = `Id: ${pokemonData.id}`;
     document.getElementById("pokemonName").innerHTML = `Name: ${pokemonName}`;
     document.getElementById("pokemonHeight").innerHTML = `Height: ${pokemonData.height}`;
     document.getElementById("pokemonWeight").innerHTML = `Weight: ${pokemonData.weight}`;
-}*/
+    document.getElementById("pokemonURL").innerHTML = `URL: ${pokemonUrl}`;
+}

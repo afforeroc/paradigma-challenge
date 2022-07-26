@@ -4,27 +4,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paradigma Challenge - Pokemon List</title>
+    <title>Pokedex - Paradigma Challenge</title>
     <link rel="stylesheet" href="public/css/styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://pagination.js.org/dist/2.1.5/pagination.js"></script>
 </head>
 <body>
     <div id="myDIV" class="header">
-        <h1>Paradigma Challenge</h1>
+        <h1>Pokedex</h1>
     </div>
     
-    <section class="container">
+    <div id="content">
         <div class="left-half">
             <div id="data-container"></div>
             <div id="pagination-container"></div>
         </div>
         <div class="right-half">
             <article>
-                <p id="pokemonId"></p>
-                <p id="pokemonName"></p>
-                <p id="pokemonWeight"></p>
-                <p id="pokemonHeight"></p>
+                <img id= "pokemonImage" src="public/imgs/no_found_pokemon.png" alt="Pokemon Image" width="200" height="200">
+                <p id="pokemonId">Id: ???</p>
+                <p id="pokemonName">Name: ???</p>
+                <p id="pokemonWeight">Height: ???</p>
+                <p id="pokemonHeight">Weight: ???</p>
+                <p id="pokemonURL"> URL: ???</p>
             </article>
         </div>
     </section>
