@@ -1,16 +1,28 @@
-async function main () {
-    let pokemonUnorderedListElement = document.getElementById("pokemonUnorderedList");
+function simpleTemplating(data) {
+    var html = '<ul>';
+    $.each(data, function(index, item){
+        html += '<li>'+ item +'</li>';
+    });
+    html += '</ul>';
+    return html;
+}
+
+$('#pagination-container').pagination({
+    dataSource: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14, 15, 16, 17, 18, 19 ,20, 195],
+    callback: function(data, pagination) {
+        // template method of yourself
+        var html = simpleTemplating(data);
+        $('#data-container').html(html);
+    }
+})
+
+/*async function main () {
+
+    let pokemonUnorderedListElement = document.getElementById("pokemonUL");
     //console.log(pokemonUnorderedListElement); 
     let data = await getPockemonList();
     //console.log(data.results);
     fillUnorderedList(pokemonUnorderedListElement, data.results);
-
-    let a = document.createElement('a');
-    let linkText = document.createTextNode("my title text");
-    a.appendChild(linkText);
-    a.title = "my title text";
-    a.href = "http://example.com";
-    document.body.appendChild(a);
 
 }
 main();
@@ -21,36 +33,29 @@ async function getPockemonList() {
     return data;
 }
 
+function niceName(name) {
+    name = name.replace(/-/g, ' '); // Replace all hyphens with spaces
+    name = name.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()); //Capitalize all words
+    return name;
+}
+
 function fillUnorderedList(ul, results) {
     console.log(results);
     results.forEach((pokemonEntry, index) => {
         let li = document.createElement("li");
-        let pokemonName = pokemonEntry.name.replace(/-/g, ' '); // Replace all hyphens with spaces
-        let capitalizedPokemonName = pokemonName.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()); //Capitalize all words
-        //let txtNode = document.createTextNode(`${index + 1}. ${capitalizedPokemonName}, ${pokemonEntry.url}`); 
-        /*let link = `${index + 1}. ${capitalizedPokemonName}, ${pokemonEntry.url}`;
-        a.appendChild(link); 
-        a.title = `${index + 1}. ${capitalizedPokemonName}, ${pokemonEntry.url}`;
-        a.href = `${pokemonEntry.url}`;
-        li.appendChild(a);*/
+        let pokemonName = niceName(pokemonEntry.name);
 
-        // Create anchor element.
-        let a = document.createElement('a'); 
+        // Pokemon Index + Name
+        let p1Tag = document.createElement("p");
+        p1Tag.appendChild(document.createTextNode(`${index + 1}. ${pokemonName}`));
+        p1Tag.classList.add("Name");
                   
-        // Create the text node for anchor element.
-        let entryText = `${index + 1}. ${capitalizedPokemonName}`;
-        let link = document.createTextNode(entryText);
-            
-        // Append the text node to anchor element.
-        a.appendChild(link); 
-            
-        // Set the title.
-        a.title = entryText; 
-            
-        // Set the href property.
-        //a.href = pokemonEntry.url;
+        // Pokemon URL
+        let p2Tag = document.createElement("p");
+        p2Tag.appendChild(document.createTextNode(pokemonEntry.url));
+        p2Tag.style.display = "none";
         
-        li.append(a);
+        li.append(p1Tag, p2Tag);
         li.addEventListener("click", myFunction);
         ul.appendChild(li);
     });
@@ -58,18 +63,14 @@ function fillUnorderedList(ul, results) {
 
 async function myFunction() {
     //console.log(this);
-    let child = this.childNodes[0];
-    console.log(child.innerHTML);
+    let pokemonUrl = this.childNodes[1].innerHTML;
 
-    let pokemonNameElem = document.getElementById("pokemonName");
-    let pokemonId = child.innerHTML.split(" ")[0].replace(".", "");
-    let pokemonName = child.innerHTML.split(" ")[1];
-
-    let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`);
+    let response = await fetch(pokemonUrl);
     let pokemonData = await response.json();
+    let pokemonName = niceName(pokemonData.name);
     
-    document.getElementById("pokemonId").innerHTML = `id: ${pokemonData.id}`;
-    document.getElementById("pokemonName").innerHTML = `name: ${pokemonData.name}`;
-    document.getElementById("pokemonHeight").innerHTML = `height: ${pokemonData.height}`;
-    document.getElementById("pokemonWeight").innerHTML = `weight: ${pokemonData.height}`;
-}
+    document.getElementById("pokemonId").innerHTML = `Id: ${pokemonData.id}`;
+    document.getElementById("pokemonName").innerHTML = `Name: ${pokemonName}`;
+    document.getElementById("pokemonHeight").innerHTML = `Height: ${pokemonData.height}`;
+    document.getElementById("pokemonWeight").innerHTML = `Weight: ${pokemonData.weight}`;
+}*/
