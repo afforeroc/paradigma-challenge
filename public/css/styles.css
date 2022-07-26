@@ -84,17 +84,6 @@
     clear: both;
   }
   
-  /* Style the input */
-  input {
-    margin: 0;
-    border: none;
-    border-radius: 0;
-    width: 75%;
-    padding: 10px;
-    float: left;
-    font-size: 16px;
-  }
-  
   /* Style the "Add" button */
   .addBtn {
     padding: 10px;
@@ -111,4 +100,20 @@
   
   .addBtn:hover {
     background-color: #bbb;
+  }
+
+  /*------*/
+  /* Pattern styles */
+  .container {
+    display: flex;
+  }
+
+  .left-half {
+    flex: 1;
+  }
+
+  .right-half {
+    background-color: #bbb;
+    flex: 1;
+    padding: 1rem;
   }
